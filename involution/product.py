@@ -8,22 +8,26 @@ involution.product
 Cayley Dickson doubling products for involution.Algebra
 
 name selection based on: https://arxiv.org/abs/1707.07318
-author: Jeffrey B Anderson - truejeffanderson at gmail.com
+auth
+        try:    return a.conj()
+        except: return a
+    return a, conjugate(a), b, conjugate(b)or: Jeffrey B Anderson - truejeffanderson at gmail.com
 """
+
+def _conjugate (a):
+    try:    return a.conj()
+    except: return a
 
 def _seperate(z):
     try:
         a = z.a
         b = z.b
-    except: 
+    except:
         a = z
         b = 0
-    def conjugate (a):
-        try:    return a.conj()
-        except: return a
-    return a, conjugate(a), b, conjugate(b)
+    return a, _conjugate(a), b, _conjugate(b)
 
-           
+
 def P0 (m,z1,z2):
     a,ac,b,bc = _seperate(z1)
     c,cc,d,dc = _seperate(z2)
