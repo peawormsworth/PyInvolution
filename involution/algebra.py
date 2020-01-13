@@ -11,123 +11,74 @@ source: https://github.com/peawormsworth
 author: Jeffrey B Anderson - truejeffanderson at gmail.com
 """
 
-from involution         import Algebra
-from involution.product import *
+from involution import Algebra
+
+class Complex (Algebra):
+    ii = [ -1  ]
+    dp = ['pt3' ]
+
+class Dual (Algebra):
+    ii = [  0  ]
+    dp = ['pt3']
+
+class Split (Algebra):
+    ii = [  1  ]
+    dp = ['pt3']
+
+class Quaternion (Algebra):
+    ii = [  -1 ] * 2
+    dp = ['pt3'] * 2
+
+class Octonion (Algebra):
+    ii = [  -1 ] * 3
+    dp = ['pt3'] * 3
+
+class Sedenion (Algebra):
+    ii = [  -1 ] * 4
+    dp = ['pt3'] * 4
+
+class SplitQuaternion (Algebra):
+    ii = [  -1 ,   1 ]
+    dp = ['pt3','pt3']
+
+class SplitOctonion (Algebra):
+    ii = [  -1 ,  -1 ,   1 ]
+    dp = ['pt3','pt3', 'p3']
+
+class DualComplex (Algebra):
+    ii = [  -1 ,   0 ]
+    dp = [ 'p3','pt2']
 
 
-class Complex         (Algebra):
-    ii   = -1
-    dp   = P3
-    dim  = 2
-    base = float
+### Half-tested: I think I am right but a reference says otherwise...
+
+class HyperbolicQuaternion (Algebra):
+    ## close...
+    ii = [   1 ,    1 ]
+    dp = ['pt3',  'pt3']
+
+class DualQuaternion (Algebra):
+    ## close...
+    ii = [  -1 ,  -1 ,   0 ]
+    dp = ['pt3','pt3','pt2']
+
+#########################################
+# Untested ...
+#########################################
+
+class Cd32 (Algebra):
+    ii = [  -1 ] * 5
+    dp = ['pt3'] * 5
+
+class Cd64 (Algebra):
+    ii = [  -1 ] * 6
+    dp = ['pt3'] * 6
 
 
-class Dual            (Algebra):
-    ii   = 0
-    dp   = PT3
-    dim  = 2
-    base = float
-
-
-class Split           (Algebra):
-    ii   = 1
-    dp   = PT3
-    dim  = 2
-    base = float
-
-
-class Quaternion      (Complex):
-    ii   = -1
-    dp   = P3
-    dim  = 4
-    base = Complex
-
-
-class Octonion        (Quaternion):
-    ii   = -1
-    dp   = PT0
-    dim  = 8
-    base = Quaternion
-
-
-class Sedenion        (Octonion):
-    ii   = -1
-    dp   = PT3
-    dim  = 16
-    base = Octonion
-
-
-class Cd32            (Sedenion):
-    ii   = -1
-    dp   = PT3
-    dim  = 32
-    base = Sedenion
-
-
-class Cd64            (Cd32):
-    ii   = -1
-    dp   = PT3
-    dim  = 64
-    base = Cd32
-
-
-class SplitQuaternion (Complex):
-    ii   = 1
-    dp   = P0
-    dim  = 4
-    base = Complex
-
-
-class DualComplex     (Complex):
-    ii   = 0
-    dp   = P3
-    dim  = 4
-    base = Complex
-
-
-class DualQuaternion  (Quaternion):
-    ii   = 0
-    dp   = PT1
-    dim  = 8
-    base = Quaternion
-
-
-# Remaining classes incomplete or do not match provided tables
-# placeholders for testing/development.
-
-# this is not right...
-class BiComplex       (Split):
-    ii   = -1
-    dp   = PT3
-    dim  = 4
-    base = Split
-
-    # weird conjugate...
-    def conj (m):
-        return  m.__class__(m.a, -m.b)
-
-
-# this is not right...
-class SplitOctonion   (Quaternion):
-    ii   = 1
-    dp   = P3
-    dim  = 8
-    base = Quaternion
-
-
-class SplitBiQuaternion (Algebra):
-    """
-    SplitBiQuaternions are also known as:
-
-    elliptic biquaternions, Clifford biquaternion, dyquaternions, 𝔻 ⊗ ℍ where 𝔻 is a dual number, ℍ ⊕ ℍ
-    """
-    pass
-
-
+class BiComplex            (Algebra): pass
 class BiQuaternion         (Algebra): pass
 class BiOctonion           (Algebra): pass
-class HyperbolicQuaternion (Algebra): pass
+class SplitBiQuaternion    (Algebra): pass
 class MulticomplexNumber   (Algebra): pass
 class Spacetime            (Algebra): pass
-
 
