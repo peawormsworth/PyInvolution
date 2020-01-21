@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # $Id: involution/__init__.py $
 # Author: Jeff Anderson <truejeffanderson@gmail.com>
 # Copyright: AGPL
@@ -23,9 +24,10 @@ class Algebra():
     see: involution.albegra for common algebraic constructions.
     """
 
-    ii = None
-    dp = None
+    #ii = None
+    #dp = None
     precision = 10 ** -9
+    str_func  = None
 
 
     def conj (m):
@@ -135,34 +137,11 @@ class Algebra():
         return len(m.state)
 
 
-    def __init__ (m, state, dp=None, ii=None):
-        """object constructor"""
-        try:
-            # check list input is an even 2^n
-            assert(len(state)), 'input list required'
-            assert(log(len(state),2).is_integer()), 'input list must be a power of 2 (list size = 2**n)'
-            if dp:
-                assert(2 ** len(dp) == len(state)), 'dp list must be 2 to the power of input list size'
-            if ii:
-                assert(2 ** len(ii) == len(state)), 'ii list must be 2 to the power of input list size'
-
-            m.state = np.asarray(state, dtype = np.float64)
-            if dp:
-                m.dp = dp
-            elif m.dp is None:
-                m.dp = ('pt3',) * m.level()
-
-            if ii:
-                m.ii = ii
-            elif m.ii is None:
-                m.ii = (-1,) * m.level()
-
-        except:
-            print("unknown exception here")
-            raise
-        
-
     def __str__ (m):
+        """generic string function caller"""
+        return m.str_func()
+
+    def str_ijk (m):
         """output the object in a readable form (i,j,k notation)"""
         string = ''
         if len(m) > 16:
@@ -170,24 +149,30 @@ class Algebra():
         else:
             symbols = ' ijklmnopqrstuvwx'
         for i in range(len(m)):
-            value = abs(m[i])
-            if value:
-                sign = ''
-                if m[i] > 0:
-                    if len(string):
-                        sign = sign + '+'
+            try:
+                value = abs(m[i])
+                if value:
+                    sign = ''
+                    if m[i] > 0:
+                        if len(string):
+                            sign = sign + '+'
+                    else:
+                        sign = sign + '-'
+                        pass
+                    if value % 1 < m.precision:
+                        value = int(value)
+                    if value == 1 and i:
+                        value = ''
+                    if i:
+                        symbol = symbols[i]
+                    else:
+                        symbol = ''
+                    string += sign + str(value) + symbol
+            except:
+                if string:
+                    string = string + ',' + str(m[i])
                 else:
-                    sign = sign + '-'
-                    pass
-                if value % 1 < m.precision:
-                    value = int(value)
-                if value == 1 and i:
-                    value = ''
-                if i:
-                    symbol = symbols[i]
-                else:
-                    symbol = ''
-                string = string + sign + str(value) + symbol
+                    string = str(m[i])
         if string == '':
             string = '0'
         return string
@@ -289,3 +274,34 @@ class Algebra():
         return m / abs(m)
 
 
+    def __init__ (m, state, dp=None, ii=None, str_func=None):
+        """object constructor"""
+        try:
+            # check list input is an even 2^n
+            assert(len(state)), 'input list required'
+            assert(log(len(state),2).is_integer()), 'input list must be a power of 2 (list size = 2**n)'
+            if dp:
+                assert(2 ** len(dp) == len(state)), 'dp list must be 2 to the power of input list size'
+            if ii:
+                assert(2 ** len(ii) == len(state)), 'ii list must be 2 to the power of input list size'
+
+            m.state = np.asarray(state, dtype = np.float64)
+            if dp:
+                m.dp = dp
+            elif m.dp is None:
+                m.dp = ('pt3',) * m.level()
+
+            if ii:
+                m.ii = ii
+            elif m.ii is None:
+                m.ii = (-1,) * m.level()
+
+            if str_func:
+                m.str_func = str_func
+            elif m.str_func is None:
+                m.str_func = m.str_ijk
+
+        except:
+            print("unknown exception here")
+            raise
+        
