@@ -144,8 +144,6 @@ complex_division_data = [
     [ [ 3,-3], [ 1, 2], [-3/5,-9/5] ]
 ]
 
-
-
 dual_abs_data = [
     [ [ 1, 2], 1 ],
     [ [ 3,-2], 3 ]
@@ -218,7 +216,6 @@ def two_square_identity (x,y):
     c,d = y
     return [a*c - d*b, d*a + b*c]
 
-
 def four_square_identity (x,y):
     a,b,c,d = x
     e,f,g,h = y
@@ -244,7 +241,6 @@ def eight_square_identity (x,y):
     z8 = m*d + n*c - o*b + p*a - e*l - f*k + g*j + h*i
     return [z1,z2,z3,z4,z5,z6,z7,z8]
 
-
 # this was calculated by hand. There is a fair chance that it is wrong.
 def sixteen_square_identity (x,y):
     a1,a2,a3,a4,a5,a6,a7,a8,a9,a10,a11,a12,a13,a14,a15,a16 = x
@@ -268,6 +264,7 @@ def sixteen_square_identity (x,y):
     z16 = a5 * b12 + a6  * b11 - a7  * b10 + a8  * b9  - b13 * a4  - b14 * a3  + b15 * a2  + b16 * a1  - b5  * a12 - b6  * a11 + b7  * a10 - b8  * a9  + a13 * b4  + a14 * b3  - a15 * b2  + a16 * b1
     return [z1,z2,z3,z4,z5,z6,z7,z8,z9,z10,z11,z12,z13,z14,z15,z16]
 
+# Verbose output formats
 
 def _test_unit_multiplication (self,expect,calc):
     "generic unit product table"
@@ -320,60 +317,6 @@ The Involution product is:
 
       {3}
             """.format(x,y,formula,calc,title)
-
-
-def _verbose_eight_square(x,y,formula,calc):
-    return """
-
-=== Degen's Eight Square Identity Test
-
-Given:
-
-       x: {0}
-
-       y: {1}
-
-These should be the same...
-
-Degen's Eight-Square Identity test product is:
-
-   formula(x × y):
-
-      {2}
-
-The Involution product is:
-
-   code(x × y):
-
-      {3}
-            """.format(x,y,formula,calc)
-
-
-def _verbose_four_square(x,y,formula,calc):
-    return """
-
-=== Euler's Four Square Identity Test
-
-Given:
-
-       x: {0}
-
-       y: {1}
-
-These should be the same...
-
-Euler's Four-Square Identity test product is:
-
-   formula(x × y):
-
-      {2}
-
-The Involution product is:
-
-   code(x × y):
-
-      {3}
-    """.format(x,y,formula,calc)
 
 
 def _claim_equal (calc,expect):
@@ -579,8 +522,22 @@ They should be in the same spot...
 """
 
 
-##############
-# Class begins
+def _verbose_split_quaternion_conjugate ():
+    return """
+=== Split Quaternion Conjugate test
+
+Given:
+
+ q = (a,b)
+ q = ((w+zi),(y+xi))
+
+Then:
+
+ conj(x) × x = w² + x² - y² - z²
+"""
+
+
+# Classes
 
 class TestComplex(unittest.TestCase):
     obj = Complex
@@ -591,7 +548,6 @@ class TestComplex(unittest.TestCase):
         calc = generate_str(self.obj)
         _test_unit_multiplication(self, expect=expect, calc=calc)
 
-
     def test_abs_results (self):
         "various absolute results"
         for row in complex_abs_record:
@@ -600,7 +556,6 @@ class TestComplex(unittest.TestCase):
             if DEBUG or VERBOSE:
                 print("\n|{0}| =\nexpect = {1}\n  calc = {2}".format(input, expect, calc))
             self.assertEqual(calc, expect)
-
 
     def test_add_results (self):
         "various addition results"
@@ -612,7 +567,6 @@ class TestComplex(unittest.TestCase):
             self.assertEqual(expect,calc)
             self.assertIsInstance(expect, Complex)
 
-
     def test_sub_results (self):
         "various subtraction results"
         for row in complex_sub_record:
@@ -623,7 +577,6 @@ class TestComplex(unittest.TestCase):
             self.assertEqual(expect, calc)
             self.assertIsInstance(expect, Complex)
 
-
     def test_product_results (self):
         "various product results"
         for row in complex_product_record:
@@ -633,7 +586,6 @@ class TestComplex(unittest.TestCase):
                 print("\n{0} × {1} =\nexpect = {2}\n  calc = {3}".format(a, b, expect, calc))
             self.assertEqual(expect, calc)
             self.assertIsInstance(expect, Complex)
-
 
     def test_division_results (self):
         "various division results"
@@ -647,6 +599,7 @@ class TestComplex(unittest.TestCase):
 
 
 class TestDual(unittest.TestCase):
+
     """
 Warning: there is a problem with this test.
 The dual numbers do not all have absolute values.
@@ -661,7 +614,7 @@ Should equality be forced to use pythagorus for distance calculations OR
 is that not allowed?
 How can I tell if two dual numbers are so close they're probably be equal?
 Until then, these tests are probably garbage.
-"""
+    """
 
     obj = Dual
 
@@ -670,7 +623,6 @@ Until then, these tests are probably garbage.
         expect = [ a.split() for a in dual_table.split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self, expect=expect, calc=calc)
-
 
     def test_abs_results (self):
         "various absolute results"
@@ -682,7 +634,6 @@ Until then, these tests are probably garbage.
             if DEBUG or VERBOSE:
                 print("|%s| =\nexpect = %s\n  calc = %s" % (input, expect, calc))
             self.assertEqual(calc, expect)
-
 
     def test_add_results (self):
         "various addition results"
@@ -696,7 +647,6 @@ Until then, these tests are probably garbage.
             self.assertEqual(expect,calc)
             self.assertIsInstance(expect, self.obj)
 
-
     def test_sub_results (self):
         "various subtraction results"
         if DEBUG or VERBOSE:
@@ -709,7 +659,6 @@ Until then, these tests are probably garbage.
             self.assertEqual(expect,calc)
             self.assertIsInstance(expect, self.obj)
 
-
     def test_product_results (self):
         "various product results"
         if DEBUG or VERBOSE:
@@ -721,7 +670,6 @@ Until then, these tests are probably garbage.
                 print("\n%s × %s =\nexpect = %s\n  calc = %s" % (a,b, expect, calc))
             self.assertEqual(expect,calc)
             self.assertIsInstance(expect, self.obj)
-
 
     def test_division_results (self):
         "various division results"
@@ -755,7 +703,6 @@ class TestQuaternion(unittest.TestCase):
         calc        = generate_str(self.obj)
         _test_unit_multiplication(self, expect=expect, calc=calc)
 
-
     def test_conjugation (self):
         "Long form congugation"
         loops = 100
@@ -776,7 +723,6 @@ class TestQuaternion(unittest.TestCase):
         if VERBOSE:
             _claim_equal(calc,expect)
 
-
     def test_conjugate_product (self):
         "the product of a vector with its conjugate is the multidimensional Pythagarus formula"
         loops = 100
@@ -791,7 +737,6 @@ class TestQuaternion(unittest.TestCase):
             _claim_equal(repr(calc),repr(expect))
         if VERBOSE:
             _claim_equal(calc,expect)
-
 
     def test_addition_metric_space (self):
         "Test addition is continuous in Quaternion metric topology"
@@ -812,7 +757,6 @@ class TestQuaternion(unittest.TestCase):
             self.assertAlmostEqual(calc,expect)
         if VERBOSE:
             _claim_equal(calc,expect)
-
 
     def test_dot_product (self):
         "Component vs component free dot product"
@@ -846,7 +790,6 @@ class TestOctonion(unittest.TestCase):
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
-
     def test_conjugation (self):
         "Long form congugation"
         loops = 100
@@ -867,7 +810,6 @@ class TestOctonion(unittest.TestCase):
                 -1/6*( x + (i*x)*i + (j*x)*j + (k*x)*k + (l*x)*l + (m*x)*m + (n*x)*n + (o*x)*o )\n\n")
         if VERBOSE:
             _claim_equal(calc,expect)
-
 
     def test_conjugate_product (self):
         "the product of a vector with its conjugate is the multidimensional Pythagarus formula"
@@ -897,8 +839,7 @@ class TestSedenion(unittest.TestCase):
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
 
-#####################
-# Exotic number tests
+# Exotic Algebra tests
 
 class TestSplitQuaternion(unittest.TestCase):
     obj = SplitQuaternion
@@ -908,7 +849,6 @@ class TestSplitQuaternion(unittest.TestCase):
         expect = [ a.split() for a in split_quaternion_table.split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
-
 
     def test_split_complex_generation (self):
         "Generation Split Quaternion from split-complex numbers"
@@ -930,9 +870,7 @@ class TestSplitQuaternion(unittest.TestCase):
                 _claim_equal(repr(calc),repr(expect))
             self.assertEqual(calc,expect)
         if VERBOSE:
-            print("Given:")
-            print("    q = (a,b) = ((w+zi),(y+xi))")
-            print("  conj(x) × x = w² + x² - y² - z²")
+            print(_verbose_split_quaternion_conjugate())
             _claim_equal(calc,expect)
 
     def test_nilpotent(self):
@@ -956,8 +894,8 @@ class TestSplitQuaternion(unittest.TestCase):
         calc = q*q
         expect = q
         if DEBUG:
-            print("      q = %r" % q)
-            print("    q×q = %r" % calc)
+            print("\n%8s = %r" % ('q',q))
+            print("\n%8s = %r" % ('q×q',calc))
         if VERBOSE:
             print(_verbose_split_quaternion_idempotent().format(q, calc, expect))
         self.assertAlmostEqual(calc,expect)
@@ -988,7 +926,6 @@ class TestSplitOctonion(unittest.TestCase):
         if VERBOSE: 
             print(_verbose_split_octonion_conjugation().format(calc, expect))
             _claim_equal(calc,expect)
-
 
     def test_conjugate_product (self):
         "the product of a vector with its conjugate is the multidimensional Pythagarus formula"
@@ -1036,10 +973,7 @@ class TestHyperbolicQuaternion(unittest.TestCase):
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
 
-
-##########################
 # Algebraic property tests
-
 
 class Commutative(unittest.TestCase):
     """Commutative Product tests"""
@@ -1062,7 +996,6 @@ class Commutative(unittest.TestCase):
         if VERBOSE:
             print(_verbose_commutative().format((' NOT' if d>2 else ''),x*y,y*x))
 
-
     def test_complex(self):
         self._is_commutative(Complex, loops=5000)
 
@@ -1078,12 +1011,8 @@ class Commutative(unittest.TestCase):
     def test_cd32(self):
         self._is_commutative(Cd32,loops=50)
 
-    # this did not work out for now...
-    #def test_split_octonion(self):
-        #self._is_commutative(SplitOctonion, loops=3)
 
-
-class WeakAlternativeCondition(unittest.TestCase):
+class WeakAlternative(unittest.TestCase):
 
     def _is_weak_alternative(self, obj, loops=100):
         "Weak Alternative Condition tests"
@@ -1110,7 +1039,6 @@ class WeakAlternativeCondition(unittest.TestCase):
         if VERBOSE:
             print(_verbose_weak_alternative().format(x,y,(y*x)*x,y*(x*x),(x*y)*x,x*(y*x),(x*x)*y,x*(x*y),(x*y)*y,x*(y*y),(y*x)*y,y*(x*y),(y*y)*x,y*(y*x),(' NOT' if d>8 else '')))
 
-
     def test_complex(self):
         self._is_weak_alternative(Complex,loops=1000)
 
@@ -1125,9 +1053,6 @@ class WeakAlternativeCondition(unittest.TestCase):
 
     def test_32ion(self):
         self._is_weak_alternative(Cd32,loops=10)
-
-    #def test_split_octonion(self):
-        #self._is_moufang_condition(SplitOctonion, loops=300)
 
 
 class DiophantusIdentity(unittest.TestCase):
@@ -1152,7 +1077,6 @@ class DiophantusIdentity(unittest.TestCase):
 
         if VERBOSE:
             print(_verbose_diophantus().format(x,y,abs(x),abs(y),(' NOT' if d>8 else ''),abs(x)*abs(y),abs(x*y)))
-
 
     def test_complex(self):
         self._is_diophantus_identity(Complex,loops=20000)
@@ -1220,7 +1144,6 @@ class MoufangCondition(unittest.TestCase):
             g = (z*x)*(y*z)
             h = z*((x*y)*z)
             print(_verbose_moufang_condition().format(x,y,z,a,b,c,d,e,f,g,h,' NOT' if dm>8 else ''))
-
 
     def test_complex(self):
         self._is_moufang_condition(Complex,loops=500)
@@ -1298,9 +1221,9 @@ class TwoSquareIdentity(unittest.TestCase):
         calc = x*y
         formula = obj(two_square_identity(x,y))
         self.assertEqual(formula, calc)
-
         if VERBOSE:
             print(_verbose_square_identity(x,y,formula,calc,"Brahmagupta-Fibonacci's Two"))
+
 
 class FourSquareIdentity(unittest.TestCase):
     """Four square identity"""
@@ -1312,7 +1235,6 @@ class FourSquareIdentity(unittest.TestCase):
         calc = x*y
         formula = obj(four_square_identity(x,y))
         self.assertEqual(formula, calc)
-
         if VERBOSE:
             print(_verbose_square_identity(x,y,formula,calc,"Euler's Four"))
 
@@ -1327,7 +1249,6 @@ class EightSquareIdentity(unittest.TestCase):
         calc = x*y
         formula = obj(eight_square_identity(x,y))
         self.assertEqual(formula, calc)
-
         if VERBOSE:
             print(_verbose_square_identity(x,y,formula,calc,"Degen's Eight"))
 
@@ -1342,7 +1263,6 @@ class SixteenSquareIdentity(unittest.TestCase):
         calc = x*y
         formula = obj(sixteen_square_identity(x,y))
         self.assertAlmostEqual(formula, calc)
-
         if VERBOSE:
             print(_verbose_square_identity(x,y,formula,calc,"Pfister's Sixteen"))
 
