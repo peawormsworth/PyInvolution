@@ -275,7 +275,16 @@ def _test_unit_multiplication (self,expect,calc):
     if DEBUG: print("\ncalc:   {0}\nexpect: {1}".format(calc, expect))
 
     if VERBOSE: 
-        print("""
+        print(_verbose_unit_multiplication().format(
+            object           = self.obj.__name__,
+            expected_table   = pd.DataFrame( expect, index = il, columns = il ),
+            calculated_table = pd.DataFrame(   calc, index = il, columns = il )
+        ))
+    self.assertListEqual(calc, expect)
+
+
+def _verbose_unit_multiplication ():
+   return """
 
 === Expected {object} table ===
 {expected_table}
@@ -284,15 +293,9 @@ def _test_unit_multiplication (self,expect,calc):
 {calculated_table}
 
 ...
-""".format(
-        object           = self.obj.__name__,
-        expected_table   = pd.DataFrame( expect, index = il, columns = il ),
-        calculated_table = pd.DataFrame(   calc, index = il, columns = il )
-    ))
-    self.assertListEqual(calc, expect)
+"""
 
-
-def _verbose_square_identity (x,y,formula,calc,title=''):
+def _verbose_square_identity (*l):
    return """
 
 === {4} Square Identity Test
@@ -316,7 +319,7 @@ The Involution product is:
    code(x × y):
 
       {3}
-            """.format(x,y,formula,calc,title)
+            """.format(*l)
 
 
 def _claim_equal (calc,expect):
@@ -365,38 +368,38 @@ def _verbose_weak_alternative ():
     return """
 Given:
 
-          x = {0}
-          y = {1}
+           x  = {0}
+           y  = {1}
 
 These should{14} be equal...
 
- (y × x) × x = {2}
- y ×(x  × x) = {3}
+ (y × x) × x  = {2}
+ y ×(x  × x)  = {3}
 
 These should{14} be equal...
 
- (x × y) × x = {4}
-  x ×(y  × x = {5}
+ (x × y) × x  = {4}
+  x ×(y  × x  = {5}
 
 These should{14} be equal...
 
- (x × x) × y = {6}
-  x ×(x  × y)= {7}
+ (x × x) × y  = {6}
+  x ×(x  × y) = {7}
 
 These should{14} be equal...
 
- (x × y) × y = {8}
-  x ×(y  × y)= {9}
+ (x × y) × y  = {8}
+  x ×(y  × y) = {9}
 
 These should{14} be equal...
 
- (y × x) × y = {10}
-  y ×(x  × y)= {11}
+ (y × x) × y  = {10}
+  y ×(x  × y) = {11}
 
 These should{14} be equal...
 
- (y × y) × x = {12}
-  y ×(y  × x)= {13}
+ (y × y) × x  = {12}
+  y ×(y  × x) = {13}
 """
 
 
@@ -405,18 +408,18 @@ def _verbose_diophantus ():
 
 Given:
 
-             x: {0}
-             y: {1}
+             x = {0}
+             y = {1}
 
 Having absolute values
 
-        abs(x): {2}
-        abs(y): {3}
+        abs(x) = {2}
+        abs(y) = {3}
 
 These should{4} be equal...
 
- abs(x)×abs(y): {5}
-      abs(x×y): {6}
+ abs(x)×abs(y) = {5}
+      abs(x×y) = {6}
 
 """
 
@@ -471,9 +474,9 @@ def _verbose_moufang_condition ():
     return """
 Given:
 
-       x: {0}
-       y: {1}
-       z: {2}
+       x = {0}
+       y = {1}
+       z = {2}
 
 These should{11} be equal...
 
@@ -503,22 +506,22 @@ def _verbose_power_associative ():
 
 Given random unit vectors...
 
-             x: {0}
-             y: {1}
-         x × y: {2}
+             x = {0}
+             y = {1}
+         x × y = {2}
 
 Having a magnitude (abs) of 1...
 
-        abs(x): {3}
-        abs(y): {4}
+        abs(x) = {3}
+        abs(y) = {4}
 
 Produce a product of magnitude 1...
 
-    abs(x × y): {5}
+    abs(x × y) = {5}
 
 They should be in the same spot...
 
- distance to 1: {6}
+ distance to 1 = {6}
 """
 
 
@@ -820,8 +823,6 @@ class TestOctonion(unittest.TestCase):
             x = random_vector(self.obj)
             calc = x*x.conj()
             expect = sum([a ** 2 for a in x])
-            #print('calc: %r' % calc)
-            #print('expect: %r' % expect)
             self.assertEqual(calc,expect)
         if DEBUG: 
             _claim_equal(repr(calc),repr(expect))
