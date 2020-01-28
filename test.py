@@ -269,6 +269,317 @@ def sixteen_square_identity (x,y):
     return [z1,z2,z3,z4,z5,z6,z7,z8,z9,z10,z11,z12,z13,z14,z15,z16]
 
 
+def _test_unit_multiplication (self,expect,calc):
+    "generic unit product table"
+    imaginaries = '1ijklmnopqrstuvw'
+    n  = 2**len(self.obj.dp)
+    il = list(imaginaries[:n])
+
+    if DEBUG: print("\ncalc:   {0}\nexpect: {1}".format(calc, expect))
+
+    if VERBOSE: 
+        print("""
+
+=== Expected {object} table ===
+{expected_table}
+
+=== Calculated {object} table ===
+{calculated_table}
+
+...
+""".format(
+        object           = self.obj.__name__,
+        expected_table   = pd.DataFrame( expect, index = il, columns = il ),
+        calculated_table = pd.DataFrame(   calc, index = il, columns = il )
+    ))
+    self.assertListEqual(calc, expect)
+
+
+def _verbose_square_identity (x,y,formula,calc,title=''):
+   return """
+
+=== {4} Square Identity Test
+
+Given:
+
+       x: {0}
+
+       y: {1}
+
+These should be the same...
+
+{4} Identity test product is:
+
+   formula(x × y):
+
+      {2}
+
+The Involution product is:
+
+   code(x × y):
+
+      {3}
+            """.format(x,y,formula,calc,title)
+
+
+def _verbose_eight_square(x,y,formula,calc):
+    return """
+
+=== Degen's Eight Square Identity Test
+
+Given:
+
+       x: {0}
+
+       y: {1}
+
+These should be the same...
+
+Degen's Eight-Square Identity test product is:
+
+   formula(x × y):
+
+      {2}
+
+The Involution product is:
+
+   code(x × y):
+
+      {3}
+            """.format(x,y,formula,calc)
+
+
+def _verbose_four_square(x,y,formula,calc):
+    return """
+
+=== Euler's Four Square Identity Test
+
+Given:
+
+       x: {0}
+
+       y: {1}
+
+These should be the same...
+
+Euler's Four-Square Identity test product is:
+
+   formula(x × y):
+
+      {2}
+
+The Involution product is:
+
+   code(x × y):
+
+      {3}
+    """.format(x,y,formula,calc)
+
+
+def _claim_equal (calc,expect):
+    print("""
+
+These should be equal...
+
+   calc = {0}
+ expect = {1}
+
+    """.format(calc,expect))
+
+
+def _verbose_quaternion_metric_space ():
+    return """
+p1: {0}
+q1: {1}
+p2: {2}
+q2: {3}
+ a: {4}
+
+   calc = {5}
+ expect = {6}
+"""
+
+
+def _verbose_quaternion_dot_product ():
+    return """
+
+=== Quaternion Dot Product test
+
+Given:
+
+      p: {0}
+      q: {1}
+
+then these should be equal...
+
+  calc1: {2}
+  calc2: {3}
+ expect: {4}
+"""
+
+
+def _verbose_weak_alternative ():
+    return """
+Given:
+
+          x = {0}
+          y = {1}
+
+These should{14} be equal...
+
+ (y × x) × x = {2}
+ y ×(x  × x) = {3}
+
+These should{14} be equal...
+
+ (x × y) × x = {4}
+  x ×(y  × x = {5}
+
+These should{14} be equal...
+
+ (x × x) × y = {6}
+  x ×(x  × y)= {7}
+
+These should{14} be equal...
+
+ (x × y) × y = {8}
+  x ×(y  × y)= {9}
+
+These should{14} be equal...
+
+ (y × x) × y = {10}
+  y ×(x  × y)= {11}
+
+These should{14} be equal...
+
+ (y × y) × x = {12}
+  y ×(y  × x)= {13}
+"""
+
+
+def _verbose_diophantus ():
+    return """
+
+Given:
+
+             x: {0}
+             y: {1}
+
+Having absolute values
+
+        abs(x): {2}
+        abs(y): {3}
+
+These should{4} be equal...
+
+ abs(x)×abs(y): {5}
+      abs(x×y): {6}
+
+"""
+
+
+def _verbose_split_quaternion_nilpotent ():
+    return """
+
+Given the nilpotent:
+
+          q = {0}
+
+verify it squares to zero:
+
+        q×q = {1}
+     expect = {2}
+"""
+
+
+def _verbose_split_quaternion_idempotent ():
+    return """
+
+Given the idempotent:
+
+          q = {0}
+
+...verify it squares to itself:
+
+        q×q = {1}
+     expect = {2}
+
+"""
+
+
+def _verbose_split_octonion_conjugation ():
+    return """ 
+Comparing conjugate against this formula:
+
+  conjugate(x) = -1/6*( x + (i*x)*i + (j*x)*j + (k*x)*k + (l*x)*l + (m*x)*m + (n*x)*n + (o*x)*o )
+"""
+
+
+def _verbose_commutative ():
+    return """
+These should{0} be equal...
+
+     x × y = {1}
+     y × x = {2}
+"""
+
+
+def _verbose_moufang_condition ():
+    return """
+Given:
+
+       x: {0}
+       y: {1}
+       z: {2}
+
+These should{11} be equal...
+
+  z × (x × (z × y)) = {3}
+ ((z  × x) × z) × y = {4}
+
+These should{11} be equal...
+
+ x × (z × (y × z )) = {5}
+ (( x × z) × y) × z = {6}
+
+These should{11} be equal...
+
+ (z × x) × (y × z ) = {7}
+   (z × (x × y))× z = {8}
+
+These should{11} be equal...
+
+ (z × x) × (y × z ) = {9}
+  z ×((x × y) × z ) = {10}
+"""
+
+
+def _verbose_power_associative ():
+    return """
+=== Power Associative tests
+
+Given random unit vectors...
+
+             x: {0}
+             y: {1}
+         x × y: {2}
+
+Having a magnitude (abs) of 1...
+
+        abs(x): {3}
+        abs(y): {4}
+
+Produce a product of magnitude 1...
+
+    abs(x × y): {5}
+
+They should be in the same spot...
+
+ distance to 1: {6}
+"""
+
+
+##############
 # Class begins
 
 class TestComplex(unittest.TestCase):
@@ -276,83 +587,62 @@ class TestComplex(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Complex number unit product table"
-        # ref: https://en.wikipedia.org/wiki/Complex_number
         expect = [ a.split() for a in complex_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:2]), columns = list(imaginaries[0:2]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:2]), columns = list(imaginaries[0:2]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self, expect=expect, calc=calc)
 
 
     def test_abs_results (self):
         "various absolute results"
-        if DEBUG or VERBOSE:
-            print()
         for row in complex_abs_record:
             input, expect = row
             calc = abs(input)
             if DEBUG or VERBOSE:
-                print("|%s| =\nexpect = %s\n  calc = %s" % (input, expect, calc))
+                print("\n|{0}| =\nexpect = {1}\n  calc = {2}".format(input, expect, calc))
             self.assertEqual(calc, expect)
 
 
     def test_add_results (self):
         "various addition results"
-        if DEBUG or VERBOSE:
-            print()
         for row in complex_add_record:
             a,b,expect = row
             calc = a+b
             if DEBUG or VERBOSE:
-                print("\n%s + %s =\nexpect = %s\n  calc = %s" % (a,b, expect, calc))
+                print("\n{0} + {1} =\nexpect = {2}\n  calc = {3}".format(a, b, expect, calc))
             self.assertEqual(expect,calc)
             self.assertIsInstance(expect, Complex)
 
 
     def test_sub_results (self):
         "various subtraction results"
-        if DEBUG or VERBOSE:
-            print()
         for row in complex_sub_record:
             a,b,expect = row
             calc = a-b
             if DEBUG or VERBOSE:
-                print("\n%s - %s =\nexpect = %s\n  calc = %s" % (a,b, expect, calc))
-            self.assertEqual(expect,calc)
+                print("\n{0} - {1} =\nexpect = {2}\n  calc = {3}".format(a, b, expect, calc))
+            self.assertEqual(expect, calc)
             self.assertIsInstance(expect, Complex)
 
 
     def test_product_results (self):
         "various product results"
-        if DEBUG or VERBOSE:
-            print()
         for row in complex_product_record:
             a,b,expect = row
             calc = a*b
             if DEBUG or VERBOSE:
-                print("\n%s × %s =\nexpect = %s\n  calc = %s" % (a,b, expect, calc))
-            self.assertEqual(expect,calc)
+                print("\n{0} × {1} =\nexpect = {2}\n  calc = {3}".format(a, b, expect, calc))
+            self.assertEqual(expect, calc)
             self.assertIsInstance(expect, Complex)
 
 
     def test_division_results (self):
         "various division results"
-        if DEBUG or VERBOSE:
-            print()
         for row in complex_division_record:
             a,b,expect = row
             calc = a/b
             if DEBUG or VERBOSE:
-                print("\n%s / %s =\nexpect = %s\n  calc = %s" % (a,b, expect, calc))
-            self.assertEqual(expect,calc)
+                print("\n{0} / {1} =\nexpect = {2}\n  calc = {3}".format(a, b, expect, calc))
+            self.assertEqual(expect, calc)
             self.assertIsInstance(expect, Complex)
 
 
@@ -377,20 +667,9 @@ Until then, these tests are probably garbage.
 
     def test_unit_multiplication (self):
         "Dual number unit product table"
-        # ref: https://en.wikipedia.org/wiki/Dual_number
         expect = [ a.split() for a in dual_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:2]), columns = list(imaginaries[0:2]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:2]), columns = list(imaginaries[0:2]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self, expect=expect, calc=calc)
 
 
     def test_abs_results (self):
@@ -462,20 +741,9 @@ class TestSplit(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Split number unit product table"
-        # ref: https://en.wikipedia.org/wiki/Split_number
         expect = [ a.split() for a in split_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:2]), columns = list(imaginaries[0:2]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:2]), columns = list(imaginaries[0:2]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self, expect=expect, calc=calc)
 
 
 class TestQuaternion(unittest.TestCase):
@@ -483,25 +751,13 @@ class TestQuaternion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Quaternion unit product table"
-        # ref: https://en.wikipedia.org/wiki/Quaternion
-        expect = [ a.split() for a in quaternion_table.split("\n") ]
-        calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:4]), columns = list(imaginaries[0:4]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:4]), columns = list(imaginaries[0:4]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        expect      = [ a.split() for a in quaternion_table.split("\n") ]
+        calc        = generate_str(self.obj)
+        _test_unit_multiplication(self, expect=expect, calc=calc)
 
 
     def test_conjugation (self):
         "Long form congugation"
-        # ref: https://en.wikipedia.org/wiki/Quaternion#Conjugation,_the_norm,_and_reciprocal
         loops = 100
         if VERBOSE or DEBUG: 
             print(loops, 'loops')
@@ -511,22 +767,18 @@ class TestQuaternion(unittest.TestCase):
             o,i,j,k = unit_list(self.obj)
             expect = -1/2*( x + (i*x)*i + (j*x)*j + (k*x)*k )
             if DEBUG:
-                print("   calc = %r" % (calc))
-                print(" expect = %r" % (expect))
+                _claim_equal(repr(calc),repr(expect))
             self.assertEqual(calc,expect)
         if DEBUG or VERBOSE: 
             print()
             print("\nComparing conjugate against this formula:\nconjugate(x) = \
                  -1/2*( x + (i*x)*i + (j*x)*j + (k*x)*k")
         if VERBOSE:
-            print("These should be equal...\n")
-            print("   calc = %s" % (calc))
-            print(" expect = %s" % (expect))
+            _claim_equal(calc,expect)
 
 
     def test_conjugate_product (self):
         "the product of a vector with its conjugate is the multidimensional Pythagarus formula"
-        # ref: https://en.wikipedia.org/wiki/Octonion#Conjugate,_norm,_and_inverse
         loops = 100
         if VERBOSE or DEBUG: 
             print(loops, 'loops')
@@ -535,20 +787,14 @@ class TestQuaternion(unittest.TestCase):
             calc = x*x.conj()
             expect = sum([a ** 2 for a in x])
             self.assertEqual(calc,expect)
-        if DEBUG or VERBOSE: 
-            print()
         if DEBUG: 
-            print("   calc = %r" % (calc))
-            print(" expect = %r" % (expect))
+            _claim_equal(repr(calc),repr(expect))
         if VERBOSE:
-            print("These should be equal...\n")
-            print("   calc = %s" % (calc))
-            print(" expect = %s" % (expect))
+            _claim_equal(calc,expect)
 
 
     def test_addition_metric_space (self):
         "Test addition is continuous in Quaternion metric topology"
-        # ref: https://en.wikipedia.org/wiki/Quaternion#Conjugation,_the_norm,_and_reciprocal
         object = Quaternion
         loops = 100
         if VERBOSE or DEBUG: 
@@ -562,24 +808,14 @@ class TestQuaternion(unittest.TestCase):
             calc   = abs((p1 + a*p2 + q1 + a*q2) - (p1+q1))
             expect = a*abs(p2+q2)
             if DEBUG:
-                print('p1:', p1)
-                print('q1:', q1)
-                print('p2:', p2)
-                print('q2:', q2)
-                print(' a:', a)
-                print("   calc = %r" % (calc))
-                print(" expect = %r" % (expect))
+                print(_verbose_quaternion_metric_space().format( p1, q1, p2, q2, a, repr(calc), repr(expect)))
             self.assertAlmostEqual(calc,expect)
         if VERBOSE:
-            print()
-            print("These should be equal...\n")
-            print("   calc = %s" % (calc))
-            print(" expect = %s" % (expect))
+            _claim_equal(calc,expect)
 
 
     def test_dot_product (self):
         "Component vs component free dot product"
-        # ref: https://en.wikipedia.org/wiki/Quaternion#Quaternions_and_the_geometry_of_R3
         object = Quaternion
         loops = 100
         if VERBOSE or DEBUG: 
@@ -593,21 +829,12 @@ class TestQuaternion(unittest.TestCase):
             calc2 = 1/2*(p*q.conj() + q*p.conj())
             expect = b1*b2 + c1*c2 + d1*d2
             if DEBUG:
-                print("\nGiven:")
-                print('      p:', p)
-                print('      q:', q)
-                print("  calc1 = %r" % (calc1))
-                print("  calc2 = %r" % (calc2))
-                print(" expect = %r" % (expect))
+                print(_verbose_quaternion_dot_product().format(p, q, calc1, calc2, expect))
             self.assertAlmostEqual(calc1,expect)
             self.assertAlmostEqual(calc2,expect)
             self.assertAlmostEqual(calc1,calc2)
         if VERBOSE:
-            print()
-            print("These should be equal...\n")
-            print("  calc1 = %s" % (calc1))
-            print("  calc2 = %s" % (calc2))
-            print(" expect = %s" % (expect))
+            print(_verbose_quaternion_dot_product().format(p, q, calc1, calc2, expect))
 
 
 class TestOctonion(unittest.TestCase):
@@ -615,24 +842,13 @@ class TestOctonion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Octonion unit product table"
-        # ref: https://en.wikipedia.org/wiki/Octonion
         expect = [ a.split() for a in octonion_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:8]), columns = list(imaginaries[0:8]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:8]), columns = list(imaginaries[0:8]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self,expect=expect,calc=calc)
+
 
     def test_conjugation (self):
         "Long form congugation"
-        # ref: https://en.wikipedia.org/wiki/Octonion#Conjugate,_norm,_and_inverse
         loops = 100
         if VERBOSE or DEBUG: 
             print(loops, 'loops')
@@ -650,14 +866,11 @@ class TestOctonion(unittest.TestCase):
             print("\nComparing conjugate against this formula:\nconjugate(x) = \
                 -1/6*( x + (i*x)*i + (j*x)*j + (k*x)*k + (l*x)*l + (m*x)*m + (n*x)*n + (o*x)*o )\n\n")
         if VERBOSE:
-            print("These should be equal...\n")
-            print("   calc = %s" % (calc))
-            print(" expect = %s" % (expect))
+            _claim_equal(calc,expect)
 
 
     def test_conjugate_product (self):
         "the product of a vector with its conjugate is the multidimensional Pythagarus formula"
-        # ref: https://en.wikipedia.org/wiki/Octonion#Conjugate,_norm,_and_inverse
         loops = 100
         if VERBOSE or DEBUG: 
             print(loops, 'loops')
@@ -665,18 +878,13 @@ class TestOctonion(unittest.TestCase):
             x = random_vector(self.obj)
             calc = x*x.conj()
             expect = sum([a ** 2 for a in x])
-            print('calc: %r' % calc)
-            print('expect: %r' % expect)
+            #print('calc: %r' % calc)
+            #print('expect: %r' % expect)
             self.assertEqual(calc,expect)
-        if DEBUG or VERBOSE: 
-            print()
         if DEBUG: 
-            print("   calc = %r" % (calc))
-            print(" expect = %r" % (expect))
+            _claim_equal(repr(calc),repr(expect))
         if VERBOSE:
-            print("These should be equal...\n")
-            print("   calc = %s" % (calc))
-            print(" expect = %s" % (expect))
+            _claim_equal(calc,expect)
 
 
 class TestSedenion(unittest.TestCase):
@@ -684,21 +892,12 @@ class TestSedenion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Sedenion unit product table"
-        # ref: https://en.wikipedia.org/wiki/Sedenion
         expect = [ a.split() for a in sedenion_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:16]), columns = list(imaginaries[0:16]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:16]), columns = list(imaginaries[0:16]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self,expect=expect,calc=calc)
 
+
+#####################
 # Exotic number tests
 
 class TestSplitQuaternion(unittest.TestCase):
@@ -708,21 +907,11 @@ class TestSplitQuaternion(unittest.TestCase):
         "Split Quaternion unit product table"
         expect = [ a.split() for a in split_quaternion_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:4]), columns = list(imaginaries[0:4]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:4]), columns = list(imaginaries[0:4]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self,expect=expect,calc=calc)
+
 
     def test_split_complex_generation (self):
         "Generation Split Quaternion from split-complex numbers"
-        # ref: https://en.wikipedia.org/wiki/Split-quaternion#Generation_from_split-complex_numbers
         loops = 100
         if VERBOSE or DEBUG: 
             print(loops, 'loops')
@@ -738,40 +927,31 @@ class TestSplitQuaternion(unittest.TestCase):
             calc = Split([pre_calc,0])
             expect = a*a.conj() - b*b.conj()
             if DEBUG:
-                print("   calc = %r" % (calc))
-                print(" expect = %r" % (expect))
+                _claim_equal(repr(calc),repr(expect))
             self.assertEqual(calc,expect)
         if VERBOSE:
             print("Given:")
             print("    q = (a,b) = ((w+zi),(y+xi))")
             print("  conj(x) × x = w² + x² - y² - z²")
-            print("\nThese should be equal...\n")
-            print("   calc = %s" % (calc))
-            print(" expect = %s" % (expect))
+            _claim_equal(calc,expect)
 
     def test_nilpotent(self):
         "Test Split Quaternion nilpotent - a number whose square is zero"
-        # ref: https://en.wikipedia.org/wiki/Split-quaternion
         o,i,j,k = unit_list(self.obj)
         for unit in [-k, -j, k, j]:
             q = i-unit
             calc = q*q
             expect = self.obj([0,0,0,0])
-            if DEBUG:
-                print("      q = %r" % q)
-                print("    q×q = %r" % calc)
             if VERBOSE:
-                print("\nGiven the nilpotent:")
-                print("      q = %s" %  q)
-                print("It squares to zero...")
-                print("    q×q = %s" % (calc))
-                print(" expect = %s" % (expect))
+                print(_verbose_split_quaternion_nilpotent().format(q, calc, expect))
             self.assertAlmostEqual(calc,expect)
 
     def test_idempotent(self):
         "Test Split Quaternion nilpotent - a number whose square is zero"
-        # ref: https://en.wikipedia.org/wiki/Split-quaternion
         o,i,j,k = unit_list(self.obj)
+
+        # todo: There must be more of these...
+
         q = 1/2*(o+j)
         calc = q*q
         expect = q
@@ -779,11 +959,7 @@ class TestSplitQuaternion(unittest.TestCase):
             print("      q = %r" % q)
             print("    q×q = %r" % calc)
         if VERBOSE:
-            print("\nGiven the idempotent:")
-            print("      q = %s" %  q)
-            print("\nIt's square should be itself...\n")
-            print("    q×q = %s" % (calc))
-            print(" expect = %s" % (expect))
+            print(_verbose_split_quaternion_idempotent().format(q, calc, expect))
         self.assertAlmostEqual(calc,expect)
 
 
@@ -792,24 +968,12 @@ class TestSplitOctonion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "SplitOctonion unit product table"
-        # ref: https://en.wikipedia.org/wiki/SplitOctonion
         expect = [ a.split() for a in split_octonion_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:8]), columns = list(imaginaries[0:8]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:8]), columns = list(imaginaries[0:8]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self,expect=expect,calc=calc)
 
     def test_conjugation (self):
         "Long form congugation"
-        # ref: https://en.wikipedia.org/wiki/Split-octonion#Conjugate,_norm_and_inverse
         loops = 100
         if VERBOSE or DEBUG: 
             print(loops, 'loops')
@@ -819,26 +983,15 @@ class TestSplitOctonion(unittest.TestCase):
             x,i,j,k,l,m,n,o = unit_list(self.obj)
             expect = x*z[0] - i*z[1] - j*z[2] - k*z[3]- l*z[4] - m*z[5] - n*z[6] - o*z[7]
             if DEBUG:
-                print("   calc = %r" % (calc))
-                print(" expect = %r" % (expect))
+                _claim_equal(repr(calc),repr(expect))
             self.assertEqual(calc,expect)
-        if DEBUG or VERBOSE: 
-            print()
-            print("""
-Comparing conjugate against this formula:
-  conjugate(x) = -1/6*( x + (i*x)*i + (j*x)*j + (k*x)*k + (l*x)*l + (m*x)*m + (n*x)*n + (o*x)*o )
-            """)
-        if VERBOSE:
-            print("""
-These should be equal...
-   calc = %s 
- expect = %s 
-            """ % (calc,expect))
+        if VERBOSE: 
+            print(_verbose_split_octonion_conjugation().format(calc, expect))
+            _claim_equal(calc,expect)
 
 
     def test_conjugate_product (self):
         "the product of a vector with its conjugate is the multidimensional Pythagarus formula"
-        # ref: https://en.wikipedia.org/wiki/Octonion#Conjugate,_norm,_and_inverse
         loops = 100
         if VERBOSE or DEBUG: 
             print(loops, 'loops')
@@ -847,16 +1000,10 @@ These should be equal...
             calc = x*x.conj()
             expect = sum([a ** 2 for a in x[:4]]) - sum([a ** 2 for a in x[4:]])
             self.assertEqual(calc,expect)
-        if DEBUG or VERBOSE: 
-            print()
         if DEBUG: 
-            print("   calc = %r" % (calc))
-            print(" expect = %r" % (expect))
+            _claim_equal(repr(calc),repr(expect))
         if VERBOSE:
-            print("These should be equal...\n")
-            print("   calc = %s" % (calc))
-            print(" expect = %s" % (expect))
-
+            _claim_equal(calc,expect)
 
 
 class TestDualComplex(unittest.TestCase):
@@ -864,20 +1011,9 @@ class TestDualComplex(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "DualComplex unit product table"
-        # ref: https://en.wikipedia.org/wiki/DualComplex
         expect = [ a.split() for a in dual_complex_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:4]), columns = list(imaginaries[0:4]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:4]), columns = list(imaginaries[0:4]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self,expect=expect,calc=calc)
 
 
 class TestDualQuaternion(unittest.TestCase):
@@ -885,20 +1021,9 @@ class TestDualQuaternion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "DualQuaternion unit product table"
-        # ref: https://en.wikipedia.org/wiki/DualQuaternion
         expect = [ a.split() for a in dual_quaternion_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:8]), columns = list(imaginaries[0:8]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:8]), columns = list(imaginaries[0:8]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self,expect=expect,calc=calc)
 
 
 class TestHyperbolicQuaternion(unittest.TestCase):
@@ -906,20 +1031,14 @@ class TestHyperbolicQuaternion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "HyperbolicQuaternion unit product table"
-        # ref: https://en.wikipedia.org/wiki/HyperbolicQuaternion
         expect = [ a.split() for a in hyperbolic_quaternion_table.split("\n") ]
         calc = generate_str(self.obj)
-        if DEBUG or VERBOSE:
-            print()
-        if DEBUG: print("\ncalc:   %s\nexpect: %s" % (calc, expect))
-        if VERBOSE:
-            imaginaries = '1ijklmnopqrstuvw'
-            df = pd.DataFrame (expect, index = list(imaginaries[0:4]), columns = list(imaginaries[0:4]))
-            print ("\n=== Expected %s table ===\n%s" % (self.obj.__name__,df))
-            df2 = pd.DataFrame (calc, index = list(imaginaries[0:4]), columns = list(imaginaries[0:4]))
-            print ("\n=== Calculated %s table ===\n%s" % (self.obj.__name__,df2))
-        if DEBUG or VERBOSE: print('...')
-        self.assertListEqual(calc, expect)
+        _test_unit_multiplication(self,expect=expect,calc=calc)
+
+
+
+##########################
+# Algebraic property tests
 
 
 class Commutative(unittest.TestCase):
@@ -937,15 +1056,12 @@ class Commutative(unittest.TestCase):
                 self.assertNotEqual(x*y,y*x)
             else:
                 self.assertEqual(x*y,y*x)
-        if DEBUG or VERBOSE: 
-            print()
         if DEBUG: 
             print("x × y = %r" % (x*y))
             print("y × x = %r" % (y*x))
         if VERBOSE:
-            print("These should%s be equal...\n" %(' NOT' if d > 2 else ''))
-            print("x × y = %s" % (x*y))
-            print("y × x = %s" % (y*x))
+            print(_verbose_commutative().format((' NOT' if d>2 else ''),x*y,y*x))
+
 
     def test_complex(self):
         self._is_commutative(Complex, loops=5000)
@@ -977,7 +1093,6 @@ class WeakAlternativeCondition(unittest.TestCase):
         for n in range(loops):
             x = random_vector(obj)
             y = random_vector(obj)
-            #print('x,y: ',x,y)
             if d < 16:
                 self.assertEqual((y*x)*x, y*(x*x))
                 self.assertEqual((x*y)*x, x*(y*x))
@@ -993,27 +1108,8 @@ class WeakAlternativeCondition(unittest.TestCase):
                 self.assertNotEqual((x*y)*y, x*(y*y))
                 self.assertNotEqual((y*y)*x, y*(y*x))
         if VERBOSE:
-            print("\nGiven:\n")
-            print("%12s : %s\n" % ('          x ',  x         ))
-            print("%12s : %s\n" % ('          y ',  y         ))
-            print("These should%s be equal...\n" %(' NOT' if d > 8 else ''))
-            print("%12s : %s\n" % ('(y × x) × x ', (y* x) *x  ))
-            print("%12s : %s\n" % (' y ×(x  × x)',  y*(x  *x) ))
-            print("These should%s be equal...\n" %(' NOT' if d > 8 else ''))
-            print("%12s : %s\n" % ('(x × y) × x ', (x* y) *x  ))
-            print("%12s : %s\n" % (' x ×(y  × x ',  x*(y  *x) ))
-            print("These should%s be equal...\n" %(' NOT' if d > 8 else ''))
-            print("%12s : %s\n" % ('(x × x) × y ', (x* x) *y  ))
-            print("%12s : %s\n" % (' x ×(x  × y)',  x*(x  *y) ))
-            print("These should%s be equal...\n" %(' NOT' if d > 8 else ''))
-            print("%12s : %s\n" % ('(x × y) × y ', (x* y) *y  ))
-            print("%12s : %s\n" % (' x ×(y  × y)',  x*(y  *y) ))
-            print("These should%s be equal...\n" %(' NOT' if d > 8 else ''))
-            print("%12s : %s\n" % ('(y × x) × y ', (y* x) *y  ))
-            print("%12s : %s\n" % (' y ×(x  × y)',  y*(x  *y) ))
-            print("These should%s be equal...\n" %(' NOT' if d > 8 else ''))
-            print("%12s : %s\n" % ('(y × y) × x ', (y* y) *x  ))
-            print("%12s : %s\n" % (' y ×(y  × x)',  y*(y  *x) ))
+            print(_verbose_weak_alternative().format(x,y,(y*x)*x,y*(x*x),(x*y)*x,x*(y*x),(x*x)*y,x*(x*y),(x*y)*y,x*(y*y),(y*x)*y,y*(x*y),(y*y)*x,y*(y*x),(' NOT' if d>8 else '')))
+
 
     def test_complex(self):
         self._is_weak_alternative(Complex,loops=1000)
@@ -1053,22 +1149,9 @@ class DiophantusIdentity(unittest.TestCase):
                 self.assertNotAlmostEqual(abs(x) * abs(y), abs(x*y), delta=PRECISION)
             else:
                 self.assertAlmostEqual(abs(x) * abs(y), abs(x*y), delta=PRECISION)
-        if VERBOSE or DEBUG:
-            print()
-        if DEBUG:
-            print("%8s: %r\n" % (            'x',  x            ))
-            print("%8s: %r\n" % (            'y',  y            ))
-            print("%8s: %r\n" % (        'abs(x)',abs(x)        ))
+
         if VERBOSE:
-            print("\nGiven:\n")
-            print("%8s: %s\n" % (            'x',  x            ))
-            print("%8s: %s\n" % (            'y',  y            ))
-            print("\nHaving absolute values:\n")
-            print("%8s: %s\n" % (        'abs(x)',abs(x)        ))
-            print("%8s: %s\n" % (        'abs(y)',abs(y)        ))
-            print("\nThese should%s be equal...\n" %(' NOT' if d > 8 else ''))
-            print("%8s: %s\n" % ( 'abs(x)×abs(y)',abs(x)*abs(y) ))
-            print("%8s: %s\n" % (      'abs(x×y)',abs(x*y)      ))
+            print(_verbose_diophantus().format(x,y,abs(x),abs(y),(' NOT' if d>8 else ''),abs(x)*abs(y),abs(x*y)))
 
 
     def test_complex(self):
@@ -1136,23 +1219,7 @@ class MoufangCondition(unittest.TestCase):
             f = (z*(x*y))*z
             g = (z*x)*(y*z)
             h = z*((x*y)*z)
-            print("\nGiven:\n")
-            print("%8s: %s\n" % ('x',x))
-            print("%8s: %s\n" % ('y',y))
-            print("%8s: %s\n" % ('z',z))
-            print("\nThese should%s be equal...\n" %(' NOT' if dm > 8 else ''))
-            print("%8s: %s\n" % ('z × (x × (z × y))' , a) )
-            print("%8s: %s\n" % ('((z  × x) × z) × y', b) )
-            print("\nThese should%s be equal...\n" %(' NOT' if dm > 8 else ''))
-            print("%8s: %s\n" % ('x × (z × (y × z ))', c) )
-            print("%8s: %s\n" % ('(( x × z) × y) × z', d) )
-            print("\nThese should%s be equal...\n" %(' NOT' if dm > 8 else ''))
-            print("%8s: %s\n" % ('(z × x) × (y × z )', e) )
-            print("%8s: %s\n" % ('(z × (x × y))× z'  , f) )
-            print("\nThese should%s be equal...\n" %(' NOT' if dm > 8 else ''))
-            print("%8s: %s\n" % ('(z × x) × (y × z )', g) )
-            print("%8s: %s\n" % ('z ×((x × y) × z )' , h) )
-            print("\nThese should%s be equal...\n" %(' NOT' if dm > 8 else ''))
+            print(_verbose_moufang_condition().format(x,y,z,a,b,c,d,e,f,g,h,' NOT' if dm>8 else ''))
 
 
     def test_complex(self):
@@ -1193,27 +1260,14 @@ class PowerAssociative(unittest.TestCase):
                 self.assertAlmostEqual(abs(z),1,delta=10**-1)
             else:
                 self.assertAlmostEqual(abs(z),1,delta=PRECISION)
-        if DEBUG or VERBOSE:
-            print()
         if DEBUG:
-            print("%8s: %r\n" % ('x',  x))
-            print("%8s: %r\n" % ('y',  y))
-            print("%8s: %r\n" % ('x*y',z))
+            print( """
+       x: {0}
+       y: {1}
+   x × y: {2}
+            """.format(x,y,x*y))
         if VERBOSE:
-            print("\n")
-            print("\nGiven random unit vectors...\n")
-            print("%8s: %s\n" % ('x',  x))
-            print("%8s: %s\n" % ('y',  y))
-            print("%8s: %s\n" % ('x*y',z))
-            print("\nHaving a magnitude (abs) of 1...\n")
-            print("%8s: %s\n" % ('abs(x)',abs(x)))
-            print("%8s: %s\n" % ('abs(y)',abs(y)))
-            print("\nProduce a product of magnitude 1...\n")
-            print("%8s: %s\n" % ('abs(x*y)',abs(z)))
-            print("\nThey should be in the same spot...\n")
-            print("%8s: %s\n" % ('distance to 1',abs(z)-1))
-        if DEBUG or VERBOSE:
-            print()
+            print( _verbose_power_associative().format(x,y,z,abs(x),abs(y),abs(z),abs(z)-1) )
 
     def test_complex(self):
         self._is_power_associative(Complex,loops=8000)
@@ -1241,18 +1295,12 @@ class TwoSquareIdentity(unittest.TestCase):
         obj = Complex
         x = random_vector(obj)
         y = random_vector(obj)
+        calc = x*y
         formula = obj(two_square_identity(x,y))
-        if VERBOSE:
-            print("\nGiven:\n")
-            print('           x: ', x)
-            print('           y: ', y)
-            print("\nThese should be the same...\n")
-            print("Brahmagupta-Fibonacci's Two-Square Identity test product is:\n")
-            print('formula(y*x): ', formula)
-            print("\nThe Involution product is:\n")
-            print('   code(y*x): ', y*x)
-        self.assertEqual(formula, x*y)
+        self.assertEqual(formula, calc)
 
+        if VERBOSE:
+            print(_verbose_square_identity(x,y,formula,calc,"Brahmagupta-Fibonacci's Two"))
 
 class FourSquareIdentity(unittest.TestCase):
     """Four square identity"""
@@ -1261,17 +1309,13 @@ class FourSquareIdentity(unittest.TestCase):
         obj = Quaternion
         x = random_vector(obj)
         y = random_vector(obj)
+        calc = x*y
         formula = obj(four_square_identity(x,y))
+        self.assertEqual(formula, calc)
+
         if VERBOSE:
-            print("\nGiven:\n")
-            print('           x: ', x)
-            print('           y: ', y)
-            print("\nThese should be the same...\n")
-            print("Euler's Four-Square Identity test product is:\n")
-            print('formula(x*y): ', formula)
-            print("\nThe Involution product is:\n")
-            print('   code(x*y): ', x*y)
-        self.assertEqual(formula, x*y)
+            print(_verbose_square_identity(x,y,formula,calc,"Euler's Four"))
+
 
 class EightSquareIdentity(unittest.TestCase):
     """Eight square identity"""
@@ -1280,17 +1324,12 @@ class EightSquareIdentity(unittest.TestCase):
         obj = Octonion
         x = random_vector(obj)
         y = random_vector(obj)
+        calc = x*y
         formula = obj(eight_square_identity(x,y))
+        self.assertEqual(formula, calc)
+
         if VERBOSE:
-            print("\nGiven:\n")
-            print('           x: ', x)
-            print('           y: ', y)
-            print("\nThese should be the same...\n")
-            print("Degen's Eight-Square Identity test product is:\n")
-            print('formula(x*y): ', formula)
-            print("\nThe Involution product is:\n")
-            print('   code(x*y): ', x*y)
-        self.assertEqual(formula, x*y)
+            print(_verbose_square_identity(x,y,formula,calc,"Degen's Eight"))
 
 
 class SixteenSquareIdentity(unittest.TestCase):
@@ -1300,17 +1339,12 @@ class SixteenSquareIdentity(unittest.TestCase):
         obj = Sedenion
         x = random_vector(obj)
         y = random_vector(obj)
+        calc = x*y
         formula = obj(sixteen_square_identity(x,y))
+        self.assertAlmostEqual(formula, calc)
+
         if VERBOSE:
-            print("\nGiven:\n")
-            print('           x: ', x)
-            print('           y: ', y)
-            print("\nThese should be the same...\n")
-            print("Pfister's Sixteen-Square Identity test product is:\n")
-            print('formula(x*y): ', formula)
-            print("\nThe Involution product is:\n")
-            print('   code(x*y): ', x*y)
-        self.assertAlmostEqual(formula, x*y)
+            print(_verbose_square_identity(x,y,formula,calc,"Pfister's Sixteen"))
 
 
 # run all tests on execute...
