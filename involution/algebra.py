@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # $Id: involution/algebra.py $
 # Author: Jeff Anderson <truejeffanderson@gmail.com>
 # Copyright: AGPL
@@ -14,71 +15,74 @@ author: Jeffrey B Anderson - truejeffanderson at gmail.com
 from involution import Algebra
 
 class Complex (Algebra):
-    ii = [ -1  ]
-    dp = ['pt3' ]
+    ii = '-'
+    dp = '3'
 
 class Dual (Algebra):
-    ii = [  0  ]
-    dp = ['pt3']
+    ii = '0'
+    dp = '3'
 
 class Split (Algebra):
-    ii = [  1  ]
-    dp = ['pt3']
+    """Split-complex numbers also knowns as real tessarines"""
+    ii = '+'
+    dp = '3'
 
 class Quaternion (Algebra):
-    ii = [  -1 ] * 2
-    dp = ['pt3'] * 2
+    ii = '--'
+    dp = '34'
 
 class Octonion (Algebra):
-    ii = [  -1 ] * 3
-    dp = ['pt3'] * 3
+    ii = '---'
+    dp = '334'
 
 class Sedenion (Algebra):
-    ii = [  -1 ] * 4
-    dp = ['pt3'] * 4
+    ii = '----'
+    dp = '3334'
 
 class SplitQuaternion (Algebra):
-    ii = [  -1 ,   1 ]
-    dp = ['pt3','pt3']
+    """SplitQuaternion. aka: Para-quaternion, exspherical system, Antiquaternion, Pseudoquaternion"""
+    ii = '-+'
+    dp = '34'
 
 class SplitOctonion (Algebra):
-    ii = [  -1 ,  -1 ,   1 ]
-    dp = ['pt3','pt3', 'p3']
+    ii = '--+'
+    dp = '330'
 
 class DualComplex (Algebra):
-    ii = [  -1 ,   0 ]
-    dp = [ 'p3','pt2']
+    ii = '-0'
+    dp = '74'
 
 
 ### Half-tested: I think I am right but a reference says otherwise...
 
 class HyperbolicQuaternion (Algebra):
     ## close...
-    ii = [   1 ,    1 ]
-    dp = ['pt3',  'pt3']
+    ii = '++'
+    dp = '34'
 
 class DualQuaternion (Algebra):
     ## close...
-    ii = [  -1 ,  -1 ,   0 ]
-    dp = ['pt3','pt3','pt2']
+    ii = '--0'
+    dp = '335'
 
 #########################################
 # Untested ...
 #########################################
 
 class Cd32 (Algebra):
-    ii = [  -1 ] * 5
-    dp = ['pt3'] * 5
+    ii = '-----'
+    dp = '33334'
 
 class Cd64 (Algebra):
-    ii = [  -1 ] * 6
-    dp = ['pt3'] * 6
-
+    ii = '------'
+    dp = '333334'
 
 class BiComplex            (Algebra): pass
+# Tessarine = Bicomplex
+class Tessarine            (BiComplex): pass
 class BiQuaternion         (Algebra): pass
 class BiOctonion           (Algebra): pass
-class SplitBiQuaternion    (Algebra): pass
+class SplitBiQuaternion    (Algebra): passbraham
 class MulticomplexNumber   (Algebra): pass
 class Spacetime            (Algebra): pass
 
