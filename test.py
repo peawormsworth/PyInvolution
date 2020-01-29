@@ -21,88 +21,100 @@ DEBUG   = 0
 
 # Test Data...
 
-complex_table =\
-""" 1  i
-    i -1  """
+complex_table = """
+    1  i
+    i -1
+"""
 
-dual_table =\
-""" 1  i
-    i  0  """
+dual_table = """
+    1  i
+    i  0
+"""
 
-split_table =\
-""" 1  i
-    i  1  """
+split_table = """
+    1  i
+    i  1
+"""
 
-quaternion_table =\
-""" 1  i  j  k
+quaternion_table = """
+    1  i  j  k
     i -1  k -j
     j -k -1  i
-    k  j -i -1  """
+    k  j -i -1
+"""
 
-split_quaternion_table =\
-""" 1  i  j  k
+split_quaternion_table = """
+    1  i  j  k
     i -1  k -j
     j -k  1 -i
-    k  j  i  1  """
+    k  j  i  1 
+"""
 
-dual_complex_table =\
-""" 1  i  j  k
+dual_complex_table = """
+    1  i  j  k
     i -1  k -j
     j -k  0  0
-    k  j  0  0  """
+    k  j  0  0
+"""
 
-hyperbolic_quaternion_table =\
-""" 1  i  j  k
+hyperbolic_quaternion_table = """
+    1  i  j  k
     i  1  k  j
     j -k  1 -i
-    k -j  i -1  """
+    k -j  i -1
+"""
 
 # not currently used...
-bicomplex_table =\
-""" 1  i  j  k
+bicomplex_table = """
+    1  i  j  k
     i -1  k -j
     j  k  1  i
-    k -j  i -1  """
+    k -j  i -1
+"""
 
 # not currently used...
-split_quaternion_table =\
-""" 1  i  j  k
+split_quaternion_table = """
+    1  i  j  k
     i -1  k -j
     j -k  1 -i
-    k  j  i  1  """
+    k  j  i  1
+"""
 
-octonion_table =\
-""" 1  i  j  k  l  m  n  o  
+octonion_table = """
+    1  i  j  k  l  m  n  o  
     i -1  k -j  m -l -o  n 
     j -k -1  i  n  o -l -m 
     k  j -i -1  o -n  m -l 
     l -m -n -o -1  i  j  k 
     m  l -o  n -i -1 -k  j
     n  o  l -m -j  k -1 -i 
-    o -n  m  l -k -j  i -1  """
+    o -n  m  l -k -j  i -1
+"""
 
-split_octonion_table =\
-""" 1  i  j  k  l  m  n  o  
+split_octonion_table = """
+    1  i  j  k  l  m  n  o  
     i -1  k -j -m  l -o  n 
     j -k -1  i -n  o  l -m 
     k  j -i -1 -o -n  m  l 
     l  m  n  o  1  i  j  k 
     m -l -o  n -i  1  k -j 
     n  o -l -m -j -k  1  i 
-    o -n  m -l -k  j -i  1  """
+    o -n  m -l -k  j -i  1
+"""
 
-dual_quaternion_table =\
-""" 1  i  j  k  l  m  n  o
+dual_quaternion_table = """
+    1  i  j  k  l  m  n  o
     i -1  k -j  m -l  o -n
     j -k -1  i  n -o -l  m
     k  j -i -1  o  n -m -l
     l -m -n -o  0  0  0  0
     m  l  o -n  0  0  0  0
     n -o  l  m  0  0  0  0
-    o  n -m  l  0  0  0  0  """
+    o  n -m  l  0  0  0  0
+"""
 
-sedenion_table =\
-""" 1  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w
+sedenion_table = """
+    1  i  j  k  l  m  n  o  p  q  r  s  t  u  v  w
     i -1  k -j  m -l -o  n  q -p -s  r -u  t  w -v
     j -k -1  i  n  o -l -m  r  s -p -q -v -w  t  u
     k  j -i -1  o -n  m -l  s -r  q -p -w  v -u  t
@@ -117,7 +129,8 @@ sedenion_table =\
     t  u  v  w  p -q -r -s -l  m  n  o -1 -i -j -k
     u -t  w -v  q  p  s -r -m -l  o -n  i -1  k -j
     v -w -t  u  r -s  p  q -n -o -l  m  j -k -1  i
-    w  v -u -t  s  r -q  p -o  n -m -l  k  j -i -1  """
+    w  v -u -t  s  r -q  p -o  n -m -l  k  j -i -1
+"""
 
 complex_abs_data = [
     [ [ 1, 2], sqrt(5 ) ],
@@ -177,12 +190,11 @@ complex_add_record      = [ (Complex(a),Complex(b),Complex(c)) for a,b,c    in c
 complex_sub_record      = [ (Complex(a),Complex(b),Complex(c)) for a,b,c    in complex_sub_data      ]
 complex_product_record  = [ (Complex(a),Complex(b),Complex(c)) for a,b,c    in complex_product_data  ]
 complex_division_record = [ (Complex(a),Complex(b),Complex(c)) for a,b,c    in complex_division_data ]
-
-dual_abs_record      = [ (Dual(a),expect)          for a,expect in dual_abs_data      ]
-dual_add_record      = [ (Dual(a),Dual(b),Dual(c)) for a,b,c    in dual_add_data      ]
-dual_sub_record      = [ (Dual(a),Dual(b),Dual(c)) for a,b,c    in dual_sub_data      ]
-dual_product_record  = [ (Dual(a),Dual(b),Dual(c)) for a,b,c    in dual_product_data  ]
-dual_division_record = [ (Dual(a),Dual(b),Dual(c)) for a,b,c    in dual_division_data ]
+dual_abs_record         = [ (Dual(a),expect)                   for a,expect in dual_abs_data         ]
+dual_add_record         = [ (Dual(a),Dual(b),Dual(c))          for a,b,c    in dual_add_data         ]
+dual_sub_record         = [ (Dual(a),Dual(b),Dual(c))          for a,b,c    in dual_sub_data         ]
+dual_product_record     = [ (Dual(a),Dual(b),Dual(c))          for a,b,c    in dual_product_data     ]
+dual_division_record    = [ (Dual(a),Dual(b),Dual(c))          for a,b,c    in dual_division_data    ]
 
 
 # Class tools...
@@ -272,7 +284,7 @@ def _test_unit_multiplication (self,expect,calc):
     n  = 2**len(self.obj.dp)
     il = list(imaginaries[:n])
 
-    if DEBUG: print("\ncalc:   {0}\nexpect: {1}".format(calc, expect))
+    if DEBUG: print("\ncalc:   {0}\nexpect: {1}\nil: {2}".format(calc, expect, il))
 
     if VERBOSE: 
         print(_verbose_unit_multiplication().format(
@@ -461,6 +473,22 @@ Comparing conjugate against this formula:
 """
 
 
+def _verbose_octonion_conjugation ():
+    return """ 
+Comparing conjugate against this formula:
+
+  conjugate(x) = -1/6*( x + (i*x)*i + (j*x)*j + (k*x)*k + (l*x)*l + (m*x)*m + (n*x)*n + (o*x)*o )
+"""
+
+
+def _verbose_quaternion_conjugation ():
+    return """ 
+Comparing conjugate against this formula:
+
+  conjugate(x) = -1/2*( x + (i*x)*i + (j*x)*j + (k*x)*k )
+"""
+
+
 def _verbose_commutative ():
     return """
 These should{0} be equal...
@@ -540,6 +568,14 @@ Then:
 """
 
 
+def _debug_power_associative ():
+    return """
+       x: {0}
+       y: {1}
+   x × y: {2}
+"""
+
+
 # Classes
 
 class TestComplex(unittest.TestCase):
@@ -547,7 +583,7 @@ class TestComplex(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Complex number unit product table"
-        expect = [ a.split() for a in complex_table.split("\n") ]
+        expect = [ a.split() for a in complex_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self, expect=expect, calc=calc)
 
@@ -623,7 +659,7 @@ Until then, these tests are probably garbage.
 
     def test_unit_multiplication (self):
         "Dual number unit product table"
-        expect = [ a.split() for a in dual_table.split("\n") ]
+        expect = [ a.split() for a in dual_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self, expect=expect, calc=calc)
 
@@ -692,7 +728,7 @@ class TestSplit(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Split number unit product table"
-        expect = [ a.split() for a in split_table.split("\n") ]
+        expect = [ a.split() for a in split_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self, expect=expect, calc=calc)
 
@@ -702,7 +738,7 @@ class TestQuaternion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Quaternion unit product table"
-        expect      = [ a.split() for a in quaternion_table.split("\n") ]
+        expect      = [ a.split() for a in quaternion_table.strip().split("\n") ]
         calc        = generate_str(self.obj)
         _test_unit_multiplication(self, expect=expect, calc=calc)
 
@@ -719,11 +755,8 @@ class TestQuaternion(unittest.TestCase):
             if DEBUG:
                 _claim_equal(repr(calc),repr(expect))
             self.assertEqual(calc,expect)
-        if DEBUG or VERBOSE: 
-            print()
-            print("\nComparing conjugate against this formula:\nconjugate(x) = \
-                 -1/2*( x + (i*x)*i + (j*x)*j + (k*x)*k")
-        if VERBOSE:
+        if VERBOSE: 
+            print(_verbose_quaternion_conjugation())
             _claim_equal(calc,expect)
 
     def test_conjugate_product (self):
@@ -789,7 +822,7 @@ class TestOctonion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Octonion unit product table"
-        expect = [ a.split() for a in octonion_table.split("\n") ]
+        expect = [ a.split() for a in octonion_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
@@ -807,11 +840,8 @@ class TestOctonion(unittest.TestCase):
                 print("   calc = %r" % (calc))
                 print(" expect = %r" % (expect))
             self.assertEqual(calc,expect)
-        if DEBUG or VERBOSE: 
-            print()
-            print("\nComparing conjugate against this formula:\nconjugate(x) = \
-                -1/6*( x + (i*x)*i + (j*x)*j + (k*x)*k + (l*x)*l + (m*x)*m + (n*x)*n + (o*x)*o )\n\n")
-        if VERBOSE:
+        if VERBOSE: 
+            print(_verbose_octonion_conjugation())
             _claim_equal(calc,expect)
 
     def test_conjugate_product (self):
@@ -835,7 +865,7 @@ class TestSedenion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Sedenion unit product table"
-        expect = [ a.split() for a in sedenion_table.split("\n") ]
+        expect = [ a.split() for a in sedenion_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
@@ -847,7 +877,7 @@ class TestSplitQuaternion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "Split Quaternion unit product table"
-        expect = [ a.split() for a in split_quaternion_table.split("\n") ]
+        expect = [ a.split() for a in split_quaternion_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
@@ -907,7 +937,7 @@ class TestSplitOctonion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "SplitOctonion unit product table"
-        expect = [ a.split() for a in split_octonion_table.split("\n") ]
+        expect = [ a.split() for a in split_octonion_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
@@ -925,7 +955,7 @@ class TestSplitOctonion(unittest.TestCase):
                 _claim_equal(repr(calc),repr(expect))
             self.assertEqual(calc,expect)
         if VERBOSE: 
-            print(_verbose_split_octonion_conjugation().format(calc, expect))
+            print(_verbose_split_octonion_conjugation())
             _claim_equal(calc,expect)
 
     def test_conjugate_product (self):
@@ -949,7 +979,7 @@ class TestDualComplex(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "DualComplex unit product table"
-        expect = [ a.split() for a in dual_complex_table.split("\n") ]
+        expect = [ a.split() for a in dual_complex_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
@@ -959,7 +989,7 @@ class TestDualQuaternion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "DualQuaternion unit product table"
-        expect = [ a.split() for a in dual_quaternion_table.split("\n") ]
+        expect = [ a.split() for a in dual_quaternion_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
@@ -969,7 +999,7 @@ class TestHyperbolicQuaternion(unittest.TestCase):
 
     def test_unit_multiplication (self):
         "HyperbolicQuaternion unit product table"
-        expect = [ a.split() for a in hyperbolic_quaternion_table.split("\n") ]
+        expect = [ a.split() for a in hyperbolic_quaternion_table.strip().split("\n") ]
         calc = generate_str(self.obj)
         _test_unit_multiplication(self,expect=expect,calc=calc)
 
@@ -1128,14 +1158,11 @@ class MoufangCondition(unittest.TestCase):
                 self.assertEqual(c,d)
                 self.assertEqual(e,f)
                 self.assertEqual(g,h)
-        if DEBUG or VERBOSE:
-            print()
         if DEBUG:
             print("%8s: %r\n" % ('x',x))
             print("%8s: %r\n" % ('y',y))
             print("%8s: %r\n" % ('z',z))
         if VERBOSE:
-            print("\n")
             a = z*(x*(z*y))
             b = ((z*x)*z)*y
             c = x*(z*(y*z))
@@ -1184,12 +1211,13 @@ class PowerAssociative(unittest.TestCase):
                 self.assertAlmostEqual(abs(z),1,delta=10**-1)
             else:
                 self.assertAlmostEqual(abs(z),1,delta=PRECISION)
-        if DEBUG:
-            print( """
-       x: {0}
-       y: {1}
-   x × y: {2}
-            """.format(x,y,x*y))
+        if DEBUG or 1:
+            print(_debug_power_associative().format(repr(x), repr(y), repr(x*y)))
+            # why these don't work...
+            #print(_debug_power_associative().format( tuple(repr(i) for i in (x,y,x*y)) ))
+            #print(_debug_power_associative().format( tuple([repr(i) for i in (x,y,x*y)]) ))
+            #print(_debug_power_associative().format( (repr(i) for i in (x,y,x*y)]) ))
+
         if VERBOSE:
             print( _verbose_power_associative().format(x,y,z,abs(x),abs(y),abs(z),abs(z)-1) )
 
