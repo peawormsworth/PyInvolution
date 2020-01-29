@@ -82,7 +82,7 @@ class BiComplex            (Algebra): pass
 class Tessarine            (BiComplex): pass
 class BiQuaternion         (Algebra): pass
 class BiOctonion           (Algebra): pass
-class SplitBiQuaternion    (Algebra): passbraham
+class SplitBiQuaternion    (Algebra): pass
 class MulticomplexNumber   (Algebra): pass
 class Spacetime            (Algebra): pass
 
