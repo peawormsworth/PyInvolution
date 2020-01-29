@@ -12,6 +12,7 @@ source: https://github.com/peawormsworth
 author: Jeffrey B Anderson - truejeffanderson at gmail.com
 """
 
+import re
 import numpy as np
 from math import sqrt, log, ceil
 
@@ -24,17 +25,19 @@ class Algebra():
     see: involution.albegra for common algebraic constructions.
     """
 
-    #ii = None
-    #dp = None
     precision = 10 ** -9
     str_func  = None
 
+    # convert between input and internal format: '-0+' <=> '012'
+    ii_to_internal = str.maketrans('-0+','012')
+    ii_to_external = str.maketrans('012','-0+')
+    match_ii = re.compile(r'^[-+0]+$')
+    match_dp = re.compile(r'^[0-7]+$')
 
     def conj (m):
         """conjugate this object"""
         conj = m._conj(m[:])
-        return m.__class__(conj, dp=m.dp, ii=m.ii)
-
+        return m.__class__(conj, dp=m.dp, ii=m.ii.translate(m.ii_to_external))
         
     # look into np.conjugate() and remove this routine...
     def _conj(m,x):
@@ -48,36 +51,41 @@ class Algebra():
         """recursively multiply the list according to the construction of this object"""
         n = len(x)
         h = n // 2
+        #print('here')
+        #print('n:',n)
+        #print('h:',h)
         if h:
             a,b = x[:h],x[h:]
             c,d = y[:h],y[h:]
             z = np.zeros(n)
             level = int(log(h,2))
-            ii = m.ii[level]
+            #print('ii:',m.ii[level])
+            ii = int(m.ii[level]) - 1
+            #print('ii[%s]: %s' % (level,ii))
             dp = m.dp[level]
             mult = m._curse_mul
-            if dp == 'p0':
+            if dp == '0':
                 z[:h] = mult(c,a) + ii * mult(m._conj(b),d)
                 z[h:] = mult(d,m._conj(a)) + mult(b,c)
-            if dp == 'p1':
+            if dp == '1':
                 z[:h] = mult(c,a) + ii * mult(d,m._conj(b))
                 z[h:] = mult(m._conj(a),d) + mult(c,b)
-            if dp == 'p2':
+            if dp == '2':
                 z[:h] = mult(a,c) + ii * mult(m._conj(b),d)
                 z[h:] = mult(d,m._conj(a)) + mult(b,c)
-            if dp == 'p3':
+            if dp == '3':
                 z[:h] = mult(a,c) + ii * mult(d,m._conj(b))
                 z[h:] = mult(m._conj(a),d) + mult(c,b)
-            if dp == 'pt0':
+            if dp == '4':
                 z[:h] = mult(c,a) + ii * mult(b,m._conj(d))
                 z[h:] = mult(a,d) + mult(m._conj(c),b)
-            if dp == 'pt1':
+            if dp == '5':
                 z[:h] = mult(c,a) + ii * mult(m._conj(d),b)
                 z[h:] = mult(d,a) + mult(b,m._conj(c))
-            if dp == 'pt2':
+            if dp == '6':
                 z[:h] = mult(a,c) + ii * mult(b,m._conj(d))
                 z[h:] = mult(a,d) + mult(m._conj(c),b)
-            if dp == 'pt3':
+            if dp == '7':
                 z[:h] = mult(a,c) + ii * mult(m._conj(d),b)
                 z[h:] = mult(d,a) + mult(b,m._conj(c))
 
@@ -93,7 +101,7 @@ class Algebra():
         except:
             o_state = np.zeros(len(m))
             o_state[0] = o
-        return m.__class__(m._curse_mul(m.state,o_state), dp=m.dp, ii=m.ii)
+        return m.__class__(m._curse_mul(m.state,o_state), dp=m.dp, ii=m.ii.translate(m.ii_to_external))
 
 
     def __abs__ (m,state=None):
@@ -105,7 +113,7 @@ class Algebra():
             a,b = state[:h],state[h:]
             # obtain imaginary squared value based on list size...
             level = ceil(log(h,2))
-            ii = m.ii[level]
+            ii = int(m.ii[level]) - 1
             return sqrt(m.__abs__(a) ** 2 - ii * m.__abs__(b) ** 2)
         return state[0]
 
@@ -122,7 +130,7 @@ class Algebra():
         except:
             sum = m[:].tolist()
             sum[0] = sum[0] + z
-        return m.__class__(sum, dp=m.dp, ii=m.ii)
+        return m.__class__(sum, dp=m.dp, ii=m.ii.translate(m.ii_to_external))
 
         return int(log(len(m),2))
 
@@ -181,7 +189,7 @@ class Algebra():
     def __repr__ (m):
         """replicate: output this number as a string suitable for evaluation"""
         return "%r([%s], dp=%r, ii=%r)" % (str(type(m).__name__), 
-            ','.join(map(str,m[:])), m.dp, m.ii)
+            ','.join(map(str,m[:])), m.dp, m.ii.translate(m.ii_to_external))
 
 
     def __radd__ (m, z):
@@ -274,27 +282,43 @@ class Algebra():
         return m / abs(m)
 
 
+    # ii has the form '+- +' where:
+    #   '+' means i^2 = +1
+    #   '-' means i^2 = -1
+    #   '0' means i^2 =  0
+    #   and the most right character represents the 2d imaginary square
+    #
+    # dp has the form '32730' where each digits is 0..7 and the number
+    #   represents the doubling product selection described in __curse_mul__()
+    #
     def __init__ (m, state, dp=None, ii=None, str_func=None):
         """object constructor"""
         try:
+            import involution.algebra
             # check list input is an even 2^n
-            assert(len(state)), 'input list required'
-            assert(log(len(state),2).is_integer()), 'input list must be a power of 2 (list size = 2**n)'
+            state_len = len(state)
+            assert(state_len), 'input list required'
+            log_len   = log(state_len, 2)
+            assert(log_len.is_integer()), 'input list must be a power of 2 (len(list) = 2^n), not %s' % len(state)
             if dp:
-                assert(2 ** len(dp) == len(state)), 'dp list must be 2 to the power of input list size'
+                assert(2 ** len(dp) == len(state)), 'dp string length must be %s chars (2^n), not %s chars (%s)' % (log_len, len(dp), dp)
+                assert(m.match_dp.match(dp)), "dp string may only contain numbers 0 to 7, not '%s'" % dp
             if ii:
-                assert(2 ** len(ii) == len(state)), 'ii list must be 2 to the power of input list size'
+                assert(2 ** len(ii) == len(state)), 'ii length must be %s chars (2^n), not %d chars (%s)' % (log_len, len(ii), ii)
+                assert(m.match_ii.match(ii)), "ii may only contains negative, positive and empty space: '-+0', not '%s'" % ii
+                # internally ii uses characters '012' to hold the sign and just subtracts one when it needs to do math with it.
 
-            m.state = np.asarray(state, dtype = np.float64)
+            m.state = np.asarray(state, dtype=np.float64)
             if dp:
                 m.dp = dp
             elif m.dp is None:
-                m.dp = ('pt3',) * m.level()
+                m.dp = '3' * m.level()
 
             if ii:
                 m.ii = ii
             elif m.ii is None:
-                m.ii = (-1,) * m.level()
+                m.ii = '0' * m.level()
+            m.ii = m.ii.translate(m.ii_to_internal)
 
             if str_func:
                 m.str_func = str_func
