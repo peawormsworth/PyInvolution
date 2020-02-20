@@ -36,13 +36,17 @@ class Algebra():
 
     def conj (m):
         """conjugate this object"""
-        conj = m._conj(m[:])
+        conj = -m[:]
+        conj[0] *= -1
         return m.__class__(conj, dp=m.dp, ii=m.ii.translate(m.ii_to_external))
         
     # look into np.conjugate() and remove this routine...
     def _conj(m,x):
         """conjugate a given list according to the construct of this object"""
-        conj = -x
+        if x is None:
+            conj = -m[:]
+        else:
+            conj = -x
         conj[0] *= -1
         return conj
 
@@ -51,19 +55,23 @@ class Algebra():
         """recursively multiply the list according to the construction of this object"""
         n = len(x)
         h = n // 2
-        #print('here')
-        #print('n:',n)
-        #print('h:',h)
         if h:
-            a,b = x[:h],x[h:]
-            c,d = y[:h],y[h:]
-            z = np.zeros(n)
-            level = int(log(h,2))
-            #print('ii:',m.ii[level])
-            ii = int(m.ii[level]) - 1
-            #print('ii[%s]: %s' % (level,ii))
-            dp = m.dp[level]
-            mult = m._curse_mul
+            a,b       = x[:h],x[h:]
+            c,d       = y[:h],y[h:]
+            z         = np.asarray([None] * n)
+            level     = int(log(h,2))
+            ii        = int(m.ii[level]) - 1
+            dp        = m.dp[level]
+            mult      = m._curse_mul
+
+            def pos(x): return   x
+            def neg(x): return  -x
+            def nil(x): return x-x
+
+            if ii ==  1: op = pos
+            if ii ==  0: op = nil
+            if ii == -1: op = neg
+
             if dp == '0':
                 z[:h] = mult(c,a) + ii * mult(m._conj(b),d)
                 z[h:] = mult(d,m._conj(a)) + mult(b,c)
@@ -114,7 +122,18 @@ class Algebra():
             # obtain imaginary squared value based on list size...
             level = ceil(log(h,2))
             ii = int(m.ii[level]) - 1
-            return sqrt(m.__abs__(a) ** 2 - ii * m.__abs__(b) ** 2)
+
+            def pos(x): return   x
+            def neg(x): return  -x
+            def nil(x): return x-x
+
+            if ii ==  1: op = pos
+            if ii ==  0: op = nil
+            if ii == -1: op = neg
+
+            #return sqrt(m.__abs__(a) * m.__abs__(a) - ii * m.__abs__(b) * m.__abs__(b))
+            m.__abs__(a) * m.__abs__(a) - op(m.__abs__(b) * m.__abs__(b))
+            return sqrt(m.__abs__(a) * m.__abs__(a) - op(m.__abs__(b) * m.__abs__(b)))
         return state[0]
 
 
@@ -183,6 +202,8 @@ class Algebra():
                     string = str(m[i])
         if string == '':
             string = '0'
+        elif re.search(r'[+-]',string) is not None:
+            pass
         return string
 
 
@@ -242,7 +263,6 @@ class Algebra():
 
     def replace (m, z):
         """Replace: the existing coefficients with those of the given one"""
-        print('new state: ', z)
         m.state = z.state.copy()
         return m
 
@@ -276,6 +296,8 @@ class Algebra():
         """Inequality: true is z ≠ x"""
         return not m == z
 
+    def dim(m):
+        return 2 ** len(m.dp)
 
     def normalize (m):
         """Normalize: z/|z| = zn, where norm of zn = 1"""
@@ -297,8 +319,8 @@ class Algebra():
             import involution.algebra
             # check list input is an even 2^n
             state_len = len(state)
-            assert(state_len), 'input list required'
             log_len   = log(state_len, 2)
+            assert(state_len), 'input list required'
             assert(log_len.is_integer()), 'input list must be a power of 2 (len(list) = 2^n), not %s' % len(state)
             if dp:
                 assert(2 ** len(dp) == len(state)), 'dp string length must be %s chars (2^n), not %s chars (%s)' % (log_len, len(dp), dp)
@@ -308,7 +330,7 @@ class Algebra():
                 assert(m.match_ii.match(ii)), "ii may only contains negative, positive and empty space: '-+0', not '%s'" % ii
                 # internally ii uses characters '012' to hold the sign and just subtracts one when it needs to do math with it.
 
-            m.state = np.asarray(state, dtype=np.float64)
+            m.state = np.asarray(state)
             if dp:
                 m.dp = dp
             elif m.dp is None:
